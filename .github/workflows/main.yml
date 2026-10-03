@@ -1,0 +1,42 @@
+name: JRA Data Auto Collector
+
+on:
+  schedule:
+    - cron: '15 8 * * 0,6'
+  workflow_dispatch: # 手動起動ボタン
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v3
+
+      - name: Python環境のセットアップ
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 必要なライブラリのインストール
+        run: |
+          pip install requests pandas numpy
+
+      - name: データ収集エンジンの実行
+        run: python fetch_jra_json.py
+
+      - name: 生成したJSONデータをGitHubに自動保存
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          mkdir -p data
+          git add data/*.json 2>/dev/null || true
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add latest JRA Payout JSON"
+            git push origin main
+          fi
