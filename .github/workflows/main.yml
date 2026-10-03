@@ -4,11 +4,15 @@ on:
   schedule:
     # 毎週土曜・日曜の日本時間17:15（UTC 08:15）に自動実行
     - cron: '15 8 * * 0,6'
-  workflow_dispatch: # 手動でいつでも動かせるボタンを出現させる設定
+  workflow_dispatch: # 手動でいつでも動かせるボタン
 
 jobs:
   collect:
     runs-on: ubuntu-latest
+    # 🔴【完全修正】Actionsのロボットに対して、リポジトリへの「書き込み権限」を強力に明示します！
+    permissions:
+      contents: write
+      
     steps:
       - name: リポジトリをチェックアウト
         uses: actions/checkout@v3
