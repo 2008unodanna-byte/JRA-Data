@@ -1,0 +1,15 @@
+{
+    "race_id": "202606010111",
+    "payouts": [
+        {
+            "bet_type": "win",
+            "horse_number": 5,
+            "yen": 320
+        },
+        {
+            "bet_type": "place",
+            "horse_number": 5,
+            "yen": 130
+        }
+    ]
+}
