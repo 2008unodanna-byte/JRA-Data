@@ -1,3 +1,59 @@
+import json
+from pathlib import Path
+import pandas as pd
+
+# ==========================================
+# 1. 保存先ディレクトリ（dataフォルダ）の準備
+# ==========================================
+# フォルダが存在しない場合は自動で作成します（既にあれば何もしません）
+data_dir = Path("data")
+data_dir.mkdir(parents=True, exist_ok=True)
+
+# ==========================================
+# 2. JSONファイルの保存（綺麗にインデント・日本語対応）
+# ==========================================
+json_file_path = data_dir / "jra_payout.json"
+
+# サンプルデータ（辞書やリスト）
+sample_json_data = {
+    "race_id": "202606010111",
+    "payouts": [
+        {"bet_type": "win", "horse_number": 5, "yen": 320},
+        {"bet_type": "place", "horse_number": 5, "yen": 130}
+    ]
+}
+
+# データをファイルに書き込む
+with open(json_file_path, "w", encoding="utf-8") as f:
+    json.dump(
+        sample_json_data, 
+        f, 
+        ensure_ascii=False, # 日本語をUnicodeエスケープ（\uXXXX）させずにそのまま保存
+        indent=4            # 読みやすいようにインデントを整える
+    )
+
+print(f"JSONを保存しました: {json_file_path}")
+
+
+# ==========================================
+# 3. CSVファイルの保存（Pandas・Excel対応）
+# ==========================================
+csv_file_path = data_dir / "jra_results.csv"
+
+# サンプルデータ（DataFrame）
+df = pd.DataFrame([
+    {"race_id": "202606010111", "rank": 1, "horse_name": "テイエムオペラオー"},
+    {"race_id": "202606010111", "rank": 2, "horse_name": "メイショウドトウ"}
+])
+
+# CSVとして保存
+df.to_csv(
+    csv_file_path, 
+    index=False,        # 余計なインデックス列を出力しない
+    encoding="utf-8-sig" # WindowsのExcelで開いたときに日本語が文字化けしないようにする魔法の指定
+)
+
+print(f"CSVを保存しました: {csv_file_path}")
 import datetime
 import json
 import os
