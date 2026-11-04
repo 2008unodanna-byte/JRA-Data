@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      
+
     steps:
       - name: リポジトリをチェックアウト
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # v3 から v4 にアップデート
 
       - name: Python環境のセットアップ
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # v4 から最新の v5 にアップデート
         with:
           python-version: '3.10'
 
